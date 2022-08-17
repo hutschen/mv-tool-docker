@@ -1,0 +1,6 @@
+[submodule "mv-tool-ng"]
+	path = mv-tool-ng
+	url = git@github.com:hutschen/mv-tool-ng.git
+[submodule "mv-tool-api"]
+	path = mv-tool-api
+	url = git@github.com:hutschen/mv-tool-api.git
