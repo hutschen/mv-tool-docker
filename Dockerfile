@@ -46,4 +46,9 @@ RUN pip3 uninstall -y pipenv
 # Set up mv-tool-ng
 WORKDIR /usr/src/mv-tool-ng
 RUN npm install
-RUN npm run build --prod
+RUN npm run build --omit=dev
+
+# Start mv-tool
+WORKDIR /usr/src/mv-tool-api
+EXPOSE 8000
+ENTRYPOINT [ "uvicorn", "mvtool:app", "--port", "8000" ]
