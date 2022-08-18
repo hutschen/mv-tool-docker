@@ -38,9 +38,10 @@ WORKDIR /usr/src
 COPY ./mv-tool-api ./mv-tool-api
 COPY ./mv-tool-ng ./mv-tool-ng
 
-# Set up mv-tool-api
+# Set up and start mv-tool-api
 WORKDIR /usr/src/mv-tool-api
-RUN pipenv install --ignore-pipfile --deploy
+RUN pipenv install --ignore-pipfile --system --deploy
+RUN pip3 uninstall -y pipenv
 
 # Set up mv-tool-ng
 WORKDIR /usr/src/mv-tool-ng
