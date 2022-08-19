@@ -51,5 +51,4 @@ RUN npm run build --omit=dev
 # Start mv-tool
 WORKDIR /usr/src/mv-tool-api
 COPY ./config.yml ./config.yml
-EXPOSE 8000
-ENTRYPOINT [ "uvicorn", "mvtool:app", "--port", "8000" ]
+ENTRYPOINT [ "uvicorn", "mvtool:app", "--host", "0.0.0.0", "--port", "8000"]
