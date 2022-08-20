@@ -25,10 +25,13 @@ WORKDIR /usr/src
 COPY ./mv-tool-api ./api
 COPY ./mv-tool-ng ./ng
 
-# Install Python dependencies
+# Install dependencies for web API
 WORKDIR /usr/src/api
 RUN apk update \
-    && apk add --no-cache python3=3.10.5-r0 py3-pip=22.1.1-r0 \
+    && apk add --no-cache \
+        mailcap=2.1.53-r0 \
+        python3=3.10.5-r0 \
+        py3-pip=22.1.1-r0 \
     && apk add --no-cache --virtual api-build-deps build-base python3-dev=3.10.5-r0 \
     && pip3 install pipenv \
     && pipenv install --ignore-pipfile --system --deploy \
