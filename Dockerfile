@@ -16,9 +16,9 @@
 FROM alpine:3.16.2
 
 # Install main dependencies
-RUN apk update \
-    && apk add --no-cache nodejs=16.16.0-r0 \
-    && apk add --no-cache nginx=1.22.0-r1
+# RUN apk update \
+#     && apk add --no-cache nodejs=16.16.0-r0 \
+#     && apk add --no-cache nginx=1.22.0-r1
 
 # Copy sources
 WORKDIR /usr/src
@@ -28,9 +28,18 @@ COPY ./mv-tool-ng ./ng
 # Install Python dependencies
 WORKDIR /usr/src/api
 RUN apk update \
-    && apk add --no-cache --virtual build-deps build-base python3-dev=3.10.5-r0 py3-pip \
+    && apk add --no-cache --virtual api-build-deps build-base python3-dev=3.10.5-r0 py3-pip \
     && pip3 install setuptools wheel pipenv \
     && pipenv install --ignore-pipfile --system --deploy \
     && pip3 uninstall -y setuptools wheel pipenv \
-    && apk del build-deps \
-    && apk add --no-cache python3=3.10.5-r0 \
+    && apk del api-build-deps \
+    && apk add --no-cache python3=3.10.5-r0
+
+# Install npm dependencies and build Angular app
+WORKDIR /usr/src/ng
+RUN apk update \
+    && apk add --no-cache --virtual ng-build-deps nodejs=16.16.0-r0 npm=8.10.0-r0 \
+    && npm install \
+    && npm run build --omit=dev \
+    && rm -rf node_modules \
+    && apk del ng-build-deps
