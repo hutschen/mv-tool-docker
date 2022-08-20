@@ -13,42 +13,24 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-FROM python:3.10.4-slim
-SHELL ["/bin/bash", "-c"]
-ENV LANG=en_US.UTF-8
+FROM alpine:3.16.2
 
-# Install pip environment
-RUN pip3 install --upgrade pip
-RUN pip3 install pipenv
+# Install main dependencies
+RUN apk update \
+    && apk add --no-cache nodejs=16.16.0-r0 \
+    && apk add --no-cache nginx=1.22.0-r1
 
-# Pre-installation
-RUN apt update && apt upgrade -y && apt -y install wget xz-utils
-
-# Install nodejs LTS from Linux binaries, see https://nodejs.org/en/download/
-RUN wget https://nodejs.org/dist/v16.17.0/node-v16.17.0-linux-x64.tar.xz
-RUN tar xf node-v16.17.0-linux-x64.tar.xz 
-RUN cd node-v16.17.0-linux-x64 && cp -r ./{lib,share,include,bin} /usr
-RUN rm node-v16.17.0-linux-x64.tar.xz && rm -rf node-v16.17.0-linux-x64
-
-# Post-installation cleanup
-RUN apt -y remove wget xz-utils && apt -y autoremove && apt clean && rm -rf /var/lib/apt/lists/*
-
-# Copy mv-tool sources
+# Copy sources
 WORKDIR /usr/src
-COPY ./mv-tool-api ./mv-tool-api
-COPY ./mv-tool-ng ./mv-tool-ng
+COPY ./mv-tool-api ./api
+COPY ./mv-tool-ng ./ng
 
-# Set up and start mv-tool-api
-WORKDIR /usr/src/mv-tool-api
-RUN pipenv install --ignore-pipfile --system --deploy
-RUN pip3 uninstall -y pipenv
-
-# Set up mv-tool-ng
-WORKDIR /usr/src/mv-tool-ng
-RUN npm install
-RUN npm run build --omit=dev
-
-# Start mv-tool
-WORKDIR /usr/src/mv-tool-api
-COPY ./config.yml ./config.yml
-ENTRYPOINT [ "uvicorn", "mvtool:app", "--host", "0.0.0.0", "--port", "8000"]
+# Install Python dependencies
+WORKDIR /usr/src/api
+RUN apk update \
+    && apk add --no-cache --virtual build-deps build-base python3-dev=3.10.5-r0 py3-pip \
+    && pip3 install setuptools wheel pipenv \
+    && pipenv install --ignore-pipfile --system --deploy \
+    && pip3 uninstall -y setuptools wheel pipenv \
+    && apk del build-deps \
+    && apk add --no-cache python3=3.10.5-r0 \
