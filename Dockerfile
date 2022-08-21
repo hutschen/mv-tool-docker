@@ -15,17 +15,23 @@
 
 FROM node:18.7.0-alpine3.16 AS ng_build
 WORKDIR /usr/src/ng
+
+# Install npm dependencies
+COPY ./mv-tool-ng/package.json ./mv-tool-ng/package-lock.json ./
+RUN npm install
+
+# Build Angular app
 COPY ./mv-tool-ng ./
-RUN npm install && npm run ng build --optimization
+RUN npm run ng build --optimization
+
 
 FROM python:3.10.4-alpine3.16
 WORKDIR /usr/src/api
-COPY ./mv-tool-api ./
-COPY --from=ng_build /usr/src/ng/dist/mv-tool-ng ./htdocs
 
 # Install dependencies for web API
 # - mailcap for inferring MIME types from file extensions
 # - build-base for building Python C extensions
+COPY ./mv-tool-api/Pipfile ./mv-tool-api/Pipfile.lock ./
 RUN apk update \
     && apk add --no-cache mailcap \
     && apk add --no-cache --virtual build-deps build-base \
@@ -33,5 +39,9 @@ RUN apk update \
     && pipenv install --ignore-pipfile --system --deploy \
     && pip3 uninstall -y pipenv \
     && apk del build-deps
+
+# Copy API sources and Angular app build artifacts
+COPY ./mv-tool-api ./
+COPY --from=ng_build /usr/src/ng/dist/mv-tool-ng ./htdocs
 
 ENTRYPOINT [ "uvicorn", "mvtool:app", "--host", "0.0.0.0", "--port", "8000"]
