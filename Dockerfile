@@ -18,3 +18,20 @@ WORKDIR /usr/src/ng
 COPY ./mv-tool-ng ./
 RUN npm install && npm run ng build --optimization
 
+FROM python:3.10.4-alpine3.16
+WORKDIR /usr/src/api
+COPY ./mv-tool-api ./
+COPY --from=ng_build /usr/src/ng/dist/mv-tool-ng ./htdocs
+
+# Install dependencies for web API
+# - mailcap for inferring MIME types from file extensions
+# - build-base for building Python C extensions
+RUN apk update \
+    && apk add --no-cache mailcap \
+    && apk add --no-cache --virtual build-deps build-base \
+    && pip3 install pipenv \
+    && pipenv install --ignore-pipfile --system --deploy \
+    && pip3 uninstall -y pipenv \
+    && apk del build-deps
+
+ENTRYPOINT [ "uvicorn", "mvtool:app", "--host", "0.0.0.0", "--port", "8000"]
