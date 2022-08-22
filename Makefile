@@ -26,5 +26,13 @@ run:
 	docker container cp config.yml mv-tool:/usr/src/api/config.yml
 	docker container start mv-tool
 
+test:
+	docker container rm -f mv-tool
+	docker container create --name mv-tool hutschen/mv-tool
+	docker container cp config.yml mv-tool:/usr/src/api/config.yml
+	docker container start mv-tool
+	docker container exec -it mv-tool sh -c 'pip install pytest && pytest'
+	docker container stop mv-tool
+
 push:
 	docker image push hutschen/mv-tool
