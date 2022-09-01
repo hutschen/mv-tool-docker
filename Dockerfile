@@ -31,14 +31,17 @@ WORKDIR /usr/src/api
 # Install dependencies for web API
 # - mailcap for inferring MIME types from file extensions
 # - build-base for building Python C extensions
-COPY ./mv-tool-api/Pipfile ./mv-tool-api/Pipfile.lock ./
+# - postgresql-dev C headers to build psycopg2 for PostgreSQL support
+COPY ./mv-tool-api/Pipfile ./mv-tool-api/Pipfile.lock ./db-drivers.txt ./
 RUN apk update \
     && apk add --no-cache mailcap \
     && apk add --no-cache --virtual build-deps postgresql-dev build-base \
     && pip3 install pipenv \
     && pipenv install --ignore-pipfile --system --deploy \
     && pip3 uninstall -y pipenv \
-    && apk del build-deps
+    && pip3 install -r db-drivers.txt \
+    && apk del build-deps \
+    && rm Pipfile Pipfile.lock db-drivers.txt
 
 # Copy API sources and Angular app build artifacts
 COPY ./mv-tool-api ./
