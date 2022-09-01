@@ -1,2 +1,4 @@
-jira_server_url: https://your-jira-server
-sqlite_url: sqlite:///mvtool.db
+jira:
+  url: https://your-jira-server
+database:
+  url: sqlite:///mvtool.db
