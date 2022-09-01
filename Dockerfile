@@ -34,7 +34,7 @@ WORKDIR /usr/src/api
 COPY ./mv-tool-api/Pipfile ./mv-tool-api/Pipfile.lock ./
 RUN apk update \
     && apk add --no-cache mailcap \
-    && apk add --no-cache --virtual build-deps build-base \
+    && apk add --no-cache --virtual build-deps postgresql-dev build-base \
     && pip3 install pipenv \
     && pipenv install --ignore-pipfile --system --deploy \
     && pip3 uninstall -y pipenv \
