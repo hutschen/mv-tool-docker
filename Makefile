@@ -22,7 +22,7 @@ cmd:
 
 run:
 	docker container rm -f mv-tool
-	docker container create --name mv-tool -it -p 4200:8000 hutschen/mv-tool
+	docker container create --name mv-tool -p 4200:8000 hutschen/mv-tool
 	docker container cp config.yml mv-tool:/usr/src/api/config.yml
 	docker container start mv-tool
 
