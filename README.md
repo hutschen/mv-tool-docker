@@ -106,6 +106,16 @@ docker container cp config.yml mv-tool:/usr/src/api/config.yml
 docker container start mv-tool
 ```
 
+## Contributing
+
+The goal of MV-Tool is to provide its users with the greatest possible benefit in their daily work in information security. For this reason, feedback from the field and suggestions for improvement are particularly important.
+
+If you want to contribute something like this, feel free to create an issue with a feature request, an idea for improvement or a bug report. Issues can be created in English and German.
+
+Please note that the purpose of this repository is to deploy the MV tool with Docker. Issues not related to this topic are probably better placed in the issues of the [web API](https://github.com/hutschen/mv-tool-api) or the [web client](https://github.com/hutschen/mv-tool-ng).
+
+This project is just started. Later there will be more possibilities to contribute. For now please be patient. Thanks :relaxed:
+
 ## License and dependencies
 
 The MV tool itself or the source code in this repository is licensed under AGPLv3. You find the license in the [license file](LICENSE). In addition, MV-Tool uses a number of libraries to make it work. These libraries have been released by their respective authors under their own licenses. These libraries or their source code is not part of this repository.
