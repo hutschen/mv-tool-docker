@@ -1,0 +1,7 @@
+jira:
+  url: http://localhost:2990/jira
+database:
+  url: sqlite:///mvtool.db
+uvicorn:
+  log_level: error
+  log_filename: mvtool.log
