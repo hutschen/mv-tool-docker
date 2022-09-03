@@ -24,7 +24,7 @@ To build the Docker image, first make sure [Docker](https://www.docker.com/) is 
 docker image build -t hutschen/mv-tool .
 ```
 
-## How to configure MV-Tool
+## Write a configuration file
 
 Before you can run the MV-Tool in a Docker container, you have to configure it. This is done by a configuration file. This is very simple and contains only a few entries:
 
@@ -96,4 +96,16 @@ uvicorn:
 
 The log file is stored in the Docker container at `/usr/src/api/mvtool.log`. Contents of the log file are not deleted. New log entries are appended to an existing file.
 
-## How to start up the Docker container
+## Run the Docker container
+
+Save your configuration in a file (e.g. `config.yml`) and then execute the following commands to create the container, copy your configuration into the container and finally start the container.
+
+```sh
+docker container create --name mv-tool -p 4200:8000 hutschen/mv-tool
+docker container cp config.yml mv-tool:/usr/src/api/config.yml
+docker container start mv-tool
+```
+
+## License and dependencies
+
+The MV tool itself or the source code in this repository is licensed under AGPLv3. You find the license in the [license file](LICENSE). In addition, MV-Tool uses a number of libraries to make it work. These libraries have been released by their respective authors under their own licenses. These libraries or their source code is not part of this repository.
