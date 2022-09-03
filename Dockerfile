@@ -47,4 +47,4 @@ RUN apk update \
 COPY ./mv-tool-api ./
 COPY --from=ng_build /usr/src/ng/dist/mv-tool-ng ./htdocs
 
-ENTRYPOINT [ "uvicorn", "mvtool:app", "--host", "0.0.0.0", "--port", "8000"]
+ENTRYPOINT [ "python", "serve.py"]
