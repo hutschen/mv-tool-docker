@@ -1,4 +1,4 @@
-# Docker Container for MV-Tool
+# Docker image for MV-Tool
 
 MV-Tool is for tracking measures in information security. If information security is to be implemented according to [BSI IT Grundschutz](https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Standards-und-Zertifizierung/IT-Grundschutz/IT-Grundschutz-Kompendium/it-grundschutz-kompendium_node.html) or another procedure or standard, many information security measures need to be implemented.
 
@@ -42,6 +42,8 @@ uvicorn:
   log_filename: mvtool.log
 ```
 
+You can find an example configuration file `config.example.yml` in this repository.
+
 ### Connection to JIRA
 
 The connection to JIRA is mandatory for using the MV-Tool. The MV-Tool does not have its own user management, but uses that of the JIRA instance to which it is connected.
@@ -67,8 +69,8 @@ Only SQLite and PostgreSQL are currently supported as databases. You should use 
 
 MV-Tool uses SQLAlchemy as the ORM mapper. The database URLs (connect strings) must therefore be specified so that SQLAlchemy understands them:
 
-- For **SQLite** you can find the information about the structure of the connect string in the [SQLAlchemy Dokumentation](https://docs.sqlalchemy.org/en/14/dialects/sqlite.html#connect-strings).
-- Connections to **PostgreSQL** databases are made using the [psycopg2](https://www.psycopg.org/) driver. You can also find the information about the connect string in the [SQLAlchemy Dokumentation](https://docs.sqlalchemy.org/en/14/dialects/postgresql.html#dialect-postgresql-psycopg2-connect).
+- For **SQLite** you can find the information about the structure of the connect string in the [SQLAlchemy documentation](https://docs.sqlalchemy.org/en/14/dialects/sqlite.html#connect-strings).
+- Connections to **PostgreSQL** databases are made using the [psycopg2](https://www.psycopg.org/) driver. You can also find the information about the connect string in the [SQLAlchemy documentation](https://docs.sqlalchemy.org/en/14/dialects/postgresql.html#dialect-postgresql-psycopg2-connect).
 
 A connection to a SQLite database file might look like the following in your configuration file:
 
@@ -105,6 +107,8 @@ docker container create --name mv-tool -p 4200:8000 hutschen/mv-tool
 docker container cp config.yml mv-tool:/usr/src/api/config.yml
 docker container start mv-tool
 ```
+
+You should then be able to access the MV tool at http://localhost:4200.
 
 ## Contributing
 
