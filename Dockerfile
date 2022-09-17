@@ -30,12 +30,13 @@ WORKDIR /usr/src/api
 
 # Install dependencies for web API
 # - mailcap for inferring MIME types from file extensions
-# - build-base for building Python C extensions
-# - postgresql-dev C headers to build psycopg2 for PostgreSQL support
+# - libpq is the PostgreSQL client library
+# - build-deps, build-base for building Python C extensions
+# - postgresql14-dev to build psycopg2 for PostgreSQL support
 COPY ./mv-tool-api/Pipfile ./mv-tool-api/Pipfile.lock ./db-drivers.txt ./
 RUN apk update \
-    && apk add --no-cache mailcap \
-    && apk add --no-cache --virtual build-deps postgresql-dev build-base \
+    && apk add --no-cache mailcap libpq \
+    && apk add --no-cache --virtual build-deps build-base libpq-dev \
     && pip3 install pipenv \
     && pipenv install --ignore-pipfile --system --deploy \
     && pip3 uninstall -y pipenv \
@@ -47,4 +48,4 @@ RUN apk update \
 COPY ./mv-tool-api ./
 COPY --from=ng_build /usr/src/ng/dist/mv-tool-ng ./htdocs
 
-ENTRYPOINT [ "python", "serve.py"]
+ENTRYPOINT [ "python", "-u", "serve.py"]
