@@ -48,4 +48,4 @@ RUN apk update \
 COPY ./mv-tool-api ./
 COPY --from=ng_build /usr/src/ng/dist/mv-tool-ng ./htdocs
 
-ENTRYPOINT [ "python", "serve.py"]
+ENTRYPOINT [ "python", "-u", "serve.py"]
