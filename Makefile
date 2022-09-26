@@ -33,11 +33,10 @@ run:
 
 test:
 	docker container rm -f mv-tool
-	docker container create --name mv-tool hutschen/mv-tool
-	docker container cp config.yml mv-tool:/usr/src/api/config.yml
-	docker container start mv-tool
-	docker container exec -it mv-tool sh -c 'pip install pytest && pytest'
-	docker container stop mv-tool
+	docker container run -it --name mv-tool \
+		-v $(shell pwd)/config.yml:/usr/src/api/config.yml \
+		--entrypoint '/bin/sh' hutschen/mv-tool \
+		-c 'pip install pytest && pytest'
 
 push:
 	docker image push hutschen/mv-tool
