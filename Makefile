@@ -26,6 +26,8 @@ run:
 	docker container rm -f mv-tool
 	docker container create --name mv-tool -p 4200:8000 hutschen/mv-tool
 	docker container cp config.yml mv-tool:/usr/src/api/config.yml
+	if [ -f key.pem ]; then docker container cp key.pem mv-tool:/usr/src/api/key.pem; fi
+	if [ -f cert.pem ]; then docker container cp cert.pem mv-tool:/usr/src/api/cert.pem; fi
 	docker container start mv-tool
 
 test:
