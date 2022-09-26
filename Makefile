@@ -20,7 +20,8 @@ cmd:
 	docker container rm -f mv-tool
 	docker container run -it --name mv-tool \
 		-p 4200:8000 \
-		-v $(shell pwd)/config.yml:/usr/src/api/config.yml hutschen/mv-tool
+		-v $(shell pwd)/config.yml:/usr/src/api/config.yml \
+		--entrypoint '/bin/sh' hutschen/mv-tool
 
 run:
 	docker container rm -f mv-tool
