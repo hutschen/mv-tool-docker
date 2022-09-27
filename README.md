@@ -86,7 +86,7 @@ The database file `mvtool.db` addressed in this example is created automatically
 Logging is important so that bugs can be noticed and fixed in future versions of the MV-Tool. Therefore, you should set up logging and save log files outside the Docker container as well. Regarding logging, there are the following configuration options:
 
 - **Log level** with the options `critical`, `error`, `warning`, `info`, `debug`, `trace` and the default value `error`.
-- **Log Dateiname** with the default value `mvtool.log`.
+- **Log Dateiname** with the default value `null`.
 
 The logging configuration may look like the following in your configuration file:
 
@@ -96,7 +96,28 @@ uvicorn:
   log_filename: mvtool.log
 ```
 
-The log file is stored in the Docker container at `/usr/src/api/mvtool.log`. Contents of the log file are not deleted. New log entries are appended to an existing file.
+If a log file name is set, the log file is stored in the Docker container at `/usr/src/api/`. Contents of the log file are not deleted. New log entries are appended to an existing file. If no log file name is set, the logs are written to Docker Logs.
+
+### HTTPS / SSL
+
+The use of SSL / HTTPS is higly recommended. A self-signed certificate can be used for testing. For productive use, a certificate signed by a trusted authority, such as [Let's Encrypt](https://letsencrypt.org/), is recommended.
+
+A self-signed certificate can be easily generated with the following command on Linux and macOS. A password for the private key (`key.pem`) must be specified in any case, otherwise the command will fail. `-subj '/CN=localhost'` has to be adjusted to the hostname you are using if it is not `localhost`.
+
+```sh
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 365 -subj '/CN=localhost'
+```
+
+When certificate (e.g. `cert.pem`) and key file (e.g. `key.pem`) are available, these files should be copied / mounted into the Docker container under `/usr/src/api/`. After that, SSL can be configured as follows:
+
+```yaml
+uvicorn:
+  ssl_keyfile: key.pem
+  ssl_keyfile_password: password
+  ssl_certfile: cert.pem
+```
+
+**Important:** After restarting the Docker container, the MV tool can no longer be accessed via HTTP. HTTPS must be used instead.
 
 ## Run the Docker container
 

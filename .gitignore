@@ -1,1 +1,4 @@
 config.yml
+
+# SSL certificates and keys
+*.pem

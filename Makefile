@@ -20,21 +20,23 @@ cmd:
 	docker container rm -f mv-tool
 	docker container run -it --name mv-tool \
 		-p 4200:8000 \
-		-v $(shell pwd)/config.yml:/usr/src/api/config.yml hutschen/mv-tool
+		-v $(shell pwd)/config.yml:/usr/src/api/config.yml \
+		--entrypoint '/bin/sh' hutschen/mv-tool
 
 run:
 	docker container rm -f mv-tool
 	docker container create --name mv-tool -p 4200:8000 hutschen/mv-tool
 	docker container cp config.yml mv-tool:/usr/src/api/config.yml
+	if [ -f key.pem ]; then docker container cp key.pem mv-tool:/usr/src/api/key.pem; fi
+	if [ -f cert.pem ]; then docker container cp cert.pem mv-tool:/usr/src/api/cert.pem; fi
 	docker container start mv-tool
 
 test:
 	docker container rm -f mv-tool
-	docker container create --name mv-tool hutschen/mv-tool
-	docker container cp config.yml mv-tool:/usr/src/api/config.yml
-	docker container start mv-tool
-	docker container exec -it mv-tool sh -c 'pip install pytest && pytest'
-	docker container stop mv-tool
+	docker container run -it --name mv-tool \
+		-v $(shell pwd)/config.yml:/usr/src/api/config.yml \
+		--entrypoint '/bin/sh' hutschen/mv-tool \
+		-c 'pip install pytest && pytest'
 
 push:
 	docker image push hutschen/mv-tool
