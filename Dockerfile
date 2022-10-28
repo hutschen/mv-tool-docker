@@ -29,13 +29,14 @@ FROM python:3.10.8-alpine3.16
 WORKDIR /usr/src/api
 
 # Install dependencies for web API
+# - upgrade expat to temporarily fix https://snyk.io/vuln/SNYK-ALPINE316-EXPAT-3062883
 # - mailcap for inferring MIME types from file extensions
 # - libpq is the PostgreSQL client library
 # - build-deps, build-base for building Python C extensions
 # - postgresql14-dev to build psycopg2 for PostgreSQL support
 COPY ./mv-tool-api/Pipfile ./mv-tool-api/Pipfile.lock ./db-drivers.txt ./
 RUN apk update \
-    && apk add --no-cache mailcap libpq \
+    && apk add --no-cache "expat>=2.5.0-r0" mailcap libpq \
     && apk add --no-cache --virtual build-deps build-base libpq-dev \
     && pip3 install pipenv \
     && pipenv install --ignore-pipfile --system --deploy \
