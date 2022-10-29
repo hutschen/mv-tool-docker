@@ -43,3 +43,7 @@ test:
 
 push:
 	docker image push hutschen/mv-tool
+
+tag:
+	docker image tag hutschen/mv-tool hutschen/mv-tool:$(version)
+	docker image push hutschen/mv-tool:$(version)
