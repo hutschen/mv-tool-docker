@@ -16,6 +16,9 @@
 build:
 	docker image build -t hutschen/mv-tool:latest .
 
+scan:
+	docker scan hutschen/mv-tool:latest
+
 cmd:
 	docker container rm -f mv-tool
 	docker container run -it --name mv-tool \
