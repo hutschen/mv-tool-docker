@@ -39,7 +39,7 @@ test:
 	docker container run -it --name mv-tool \
 		-v $(shell pwd)/config.yml:/usr/src/api/config.yml \
 		--entrypoint '/bin/sh' hutschen/mv-tool \
-		-c 'pip install pytest && pytest'
+		-c 'pip install pytest pytest-alembic && pytest'
 
 push:
 	docker image push hutschen/mv-tool
