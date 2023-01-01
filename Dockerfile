@@ -18,7 +18,7 @@ WORKDIR /usr/src/ng
 
 # Install npm dependencies
 COPY ./mv-tool-ng/package.json ./mv-tool-ng/package-lock.json ./
-RUN mv package-lock.json npm-shrinkwrap.json && npm install
+RUN npm clean-install
 
 # Build Angular app
 COPY ./mv-tool-ng ./
