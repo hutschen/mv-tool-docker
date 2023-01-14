@@ -25,18 +25,17 @@ COPY ./mv-tool-ng ./
 RUN npm run ng build --optimization
 
 
-FROM python:3.10.8-alpine3.17
+FROM python:3.10.9-alpine3.17
 WORKDIR /usr/src/api
 
 # Install dependencies for web API
-# - upgrade openssl to temporarily fix https://security.snyk.io/vuln/SNYK-ALPINE317-OPENSSL-3188632
 # - mailcap for inferring MIME types from file extensions
 # - libpq is the PostgreSQL client library
 # - build-deps, build-base for building Python C extensions
 # - postgresql14-dev to build psycopg2 for PostgreSQL support
 COPY ./mv-tool-api/Pipfile ./mv-tool-api/Pipfile.lock ./db-drivers.txt ./
 RUN apk update \
-    && apk add --no-cache "openssl>=3.0.7-r2" mailcap libpq \
+    && apk add --no-cache mailcap libpq \
     && apk add --no-cache --virtual build-deps build-base libpq-dev \
     && pip3 install pipenv \
     && pipenv install --ignore-pipfile --system --deploy \
