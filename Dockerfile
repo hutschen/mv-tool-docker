@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-FROM node:18.11.0-alpine3.16 AS ng_build
+FROM node:18.14.1-alpine3.17 AS ng_build
 WORKDIR /usr/src/ng
 
 # Install npm dependencies
