@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-FROM node:18.11.0-alpine3.16 AS ng_build
+FROM node:18.14.1-alpine3.17 AS ng_build
 WORKDIR /usr/src/ng
 
 # Install npm dependencies
@@ -25,7 +25,7 @@ COPY ./mv-tool-ng ./
 RUN npm run ng build --optimization
 
 
-FROM python:3.10.9-alpine3.17
+FROM python:3.10.10-alpine3.17
 WORKDIR /usr/src/api
 
 # Install dependencies for web API
