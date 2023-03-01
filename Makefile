@@ -47,3 +47,9 @@ push:
 tag:
 	docker image tag hutschen/mv-tool hutschen/mv-tool:$(version)
 	docker image push hutschen/mv-tool:$(version)
+
+save:
+	docker image save hutschen/mv-tool:latest -o mv-tool.tar
+
+load:
+	docker image load -i mv-tool.tar
