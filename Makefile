@@ -53,3 +53,6 @@ save:
 
 load:
 	docker image load -i mv-tool.tar
+
+submodules-update:
+	git submodule update --init --recursive
