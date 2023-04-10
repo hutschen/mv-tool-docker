@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 build:
-	docker image build -t hutschen/mv-tool:latest .
+	docker image build --platform linux/amd64 -t hutschen/mv-tool:latest .
 
 scan:
 	docker scan hutschen/mv-tool:latest
@@ -47,3 +47,9 @@ push:
 tag:
 	docker image tag hutschen/mv-tool hutschen/mv-tool:$(version)
 	docker image push hutschen/mv-tool:$(version)
+
+save:
+	docker image save hutschen/mv-tool:latest -o mv-tool.tar
+
+load:
+	docker image load -i mv-tool.tar
