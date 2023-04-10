@@ -31,11 +31,12 @@ WORKDIR /usr/src/api
 # Install dependencies for web API
 # - mailcap for inferring MIME types from file extensions
 # - libpq is the PostgreSQL client library
+# - libstdc++ is needed for pandas
 # - build-deps, build-base for building Python C extensions
 # - postgresql14-dev to build psycopg2 for PostgreSQL support
 COPY ./mv-tool-api/Pipfile ./mv-tool-api/Pipfile.lock ./db-drivers.txt ./
 RUN apk update \
-    && apk add --no-cache mailcap libpq \
+    && apk add --no-cache mailcap libpq libstdc++ \
     && apk add --no-cache --virtual build-deps build-base libpq-dev \
     && pip3 install pipenv \
     && pipenv install --ignore-pipfile --system --deploy \
