@@ -38,12 +38,13 @@ COPY ./mv-tool-api/Pipfile ./mv-tool-api/Pipfile.lock ./db-drivers.txt ./
 RUN apk update \
     && apk add --no-cache mailcap libpq libstdc++ \
     && apk add --no-cache --virtual build-deps build-base libpq-dev \
-    && pip3 install pipenv \
+    && pip3 install --no-cache-dir pipenv \
     && pipenv install --ignore-pipfile --system --deploy \
     && pip3 uninstall -y pipenv \
-    && pip3 install -r db-drivers.txt \
+    && pip3 install --no-cache-dir -r db-drivers.txt \
     && apk del build-deps \
-    && rm Pipfile Pipfile.lock db-drivers.txt
+    && rm Pipfile Pipfile.lock db-drivers.txt \
+    && rm -rf /var/cache/apk/*
 
 # Copy API sources and Angular app build artifacts
 COPY ./mv-tool-api ./

@@ -45,11 +45,18 @@ push:
 	docker image push hutschen/mv-tool
 
 tag:
-	docker image tag hutschen/mv-tool hutschen/mv-tool:$(version)
-	docker image push hutschen/mv-tool:$(version)
+	docker image tag hutschen/mv-tool hutschen/mv-tool:$(tag)
+	docker image push hutschen/mv-tool:$(tag)
 
 save:
 	docker image save hutschen/mv-tool:latest -o mv-tool.tar
 
+pull:
+	docker pull hutschen/mv-tool:$(tag)
+	docker image tag hutschen/mv-tool:$(tag) hutschen/mv-tool:latest
+
 load:
 	docker image load -i mv-tool.tar
+
+submodules-update:
+	git submodule update --init --recursive
