@@ -52,7 +52,7 @@ save:
 	docker image save hutschen/mv-tool:latest -o mv-tool.tar
 
 pull:
-	docker pull hutschen/mv-tool:$(tag)
+	docker pull --platform linux/amd64 hutschen/mv-tool:$(tag)
 	docker image tag hutschen/mv-tool:$(tag) hutschen/mv-tool:latest
 
 load:
