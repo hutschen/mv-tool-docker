@@ -25,7 +25,7 @@ COPY ./mv-tool-ng ./
 RUN npm run ng build --optimization
 
 
-FROM python:3.11.4-alpine3.18
+FROM python:3.11.5-alpine3.18
 WORKDIR /usr/src/api
 
 # Install dependencies for web API
@@ -33,7 +33,7 @@ WORKDIR /usr/src/api
 # - libpq is the PostgreSQL client library
 # - libstdc++ is needed for pandas
 # - build-deps, build-base for building Python C extensions
-# - postgresql14-dev to build psycopg2 for PostgreSQL support
+# - libpq-dev to build psycopg2 for PostgreSQL support
 COPY ./mv-tool-api/Pipfile ./mv-tool-api/Pipfile.lock ./db-drivers.txt ./
 RUN apk update \
     && apk add --no-cache mailcap libpq libstdc++ \
