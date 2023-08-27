@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 build:
-	docker image build --platform linux/amd64 -t hutschen/mv-tool:latest .
+	docker image build --no-cache --platform linux/amd64 -t hutschen/mv-tool:latest .
 
 scan:
 	docker scan hutschen/mv-tool:latest
