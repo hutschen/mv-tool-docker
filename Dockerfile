@@ -31,14 +31,13 @@ WORKDIR /usr/src/api
 # Install dependencies for web API
 # - mailcap for inferring MIME types from file extensions
 # - libpq is the PostgreSQL client library
-# - libstdc++ is needed for pandas
 # - openldap-clients for LDAP support
 # - build-deps, build-base for building Python C extensions
 # - libpq-dev to build psycopg2 for PostgreSQL support
 # - openldap-dev to build python-ldap for LDAP support
 COPY ./mv-tool-api/Pipfile ./mv-tool-api/Pipfile.lock ./db-drivers.txt ./
 RUN apk update \
-    && apk add --no-cache mailcap libpq libstdc++ openldap-clients \
+    && apk add --no-cache mailcap libpq openldap-clients \
     && apk add --no-cache --virtual build-deps build-base libpq-dev openldap-dev \
     && pip3 install --no-cache-dir --upgrade pip \
     && pip3 install --no-cache-dir pipenv \
