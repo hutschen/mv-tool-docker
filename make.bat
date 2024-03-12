@@ -25,4 +25,8 @@ goto :%1
     docker-compose down --volumes --rmi all
     goto :eof
 
+:submodules-update
+    git submodule update --init --recursive
+    goto :eof
+
 :eof
