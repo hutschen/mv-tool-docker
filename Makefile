@@ -14,49 +14,21 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 build:
-	docker image build --no-cache --platform linux/amd64 -t hutschen/mv-tool:latest .
+	docker compose build --no-cache app
 
-scan:
-	docker scan hutschen/mv-tool:latest
+up:
+	@if [ ! -f config.yml ]; then cp config.example.yml config.yml; fi
+	docker-compose up app -d
 
-cmd:
-	docker container rm -f mv-tool
-	docker container run -it --name mv-tool \
-		-p 4200:8000 \
-		-v $(shell pwd)/config.yml:/usr/src/api/config.yml \
-		--entrypoint '/bin/sh' hutschen/mv-tool
+down:
+	docker compose down
 
-run:
-	docker container rm -f mv-tool
-	docker container create --name mv-tool -p 4200:8000 hutschen/mv-tool
-	docker container cp config.yml mv-tool:/usr/src/api/config.yml
-	if [ -f key.pem ]; then docker container cp key.pem mv-tool:/usr/src/api/key.pem; fi
-	if [ -f cert.pem ]; then docker container cp cert.pem mv-tool:/usr/src/api/cert.pem; fi
-	docker container start mv-tool
+pytest:
+	docker compose up pytest
+	docker compose down pytest
 
-test:
-	docker container rm -f mv-tool
-	docker container run -it --name mv-tool \
-		-v $(shell pwd)/config.yml:/usr/src/api/config.yml \
-		--entrypoint '/bin/sh' hutschen/mv-tool \
-		-c 'pip install pytest pytest-alembic && pytest'
-
-push:
-	docker image push hutschen/mv-tool
-
-tag:
-	docker image tag hutschen/mv-tool hutschen/mv-tool:$(tag)
-	docker image push hutschen/mv-tool:$(tag)
-
-save:
-	docker image save hutschen/mv-tool:latest -o mv-tool.tar
-
-pull:
-	docker pull --platform linux/amd64 hutschen/mv-tool:$(tag)
-	docker image tag hutschen/mv-tool:$(tag) hutschen/mv-tool:latest
-
-load:
-	docker image load -i mv-tool.tar
+cleanup:
+	docker-compose down --volumes --rmi all
 
 submodules-update:
 	git submodule update --init --recursive
