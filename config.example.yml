@@ -1,7 +1,20 @@
-jira:
-  url: http://localhost:2990/jira
+# jira:
+#   url: http://localhost:2990/jira
+ldap:
+  host: ldap
+  port: 1389
+  account_dn: cn=admin,dc=example,dc=org
+  account_password: adminpasswd
+  base_dn: dc=example,dc=org
+  attributes:
+    login: uid
 database:
-  url: sqlite:///mvtool.db
+  # url: sqlite:///mvtool.db
+  url: postgresql+psycopg2://user:passwd@db/mvtool
+fastapi:
+  docs_url: /docs
+  redoc_url: /redoc
 uvicorn:
-  log_level: error
-  log_filename: mvtool.log
+  port: 8000
+  reload: true
+  log_level: info

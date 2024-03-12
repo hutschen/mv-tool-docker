@@ -25,7 +25,7 @@ COPY ./mv-tool-ng ./
 RUN npm run ng build --optimization
 
 
-FROM python:3.11.5-alpine3.18
+FROM python:3.11.8-alpine3.19
 WORKDIR /usr/src/api
 
 # Install dependencies for web API
@@ -35,10 +35,11 @@ WORKDIR /usr/src/api
 # - build-deps, build-base for building Python C extensions
 # - libpq-dev to build psycopg2 for PostgreSQL support
 # - openldap-dev to build python-ldap for LDAP support
+# - libffi-dev for building Python C extensions that require ffi
 COPY ./mv-tool-api/Pipfile ./mv-tool-api/Pipfile.lock ./db-drivers.txt ./
 RUN apk update \
     && apk add --no-cache mailcap libpq openldap-clients \
-    && apk add --no-cache --virtual build-deps build-base libpq-dev openldap-dev \
+    && apk add --no-cache --virtual build-deps build-base libpq-dev openldap-dev libffi-dev \
     && pip3 install --no-cache-dir --upgrade pip \
     && pip3 install --no-cache-dir pipenv \
     && pipenv install --ignore-pipfile --system --deploy \
