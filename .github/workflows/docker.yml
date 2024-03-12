@@ -53,4 +53,4 @@ jobs:
           tags: hutschen/mv-tool:${{ env.tag }}
           cache-from: type=registry,ref=hutschen/caches:mv-tool
           cache-to: type=registry,ref=hutschen/caches:mv-tool,mode=max
-          platforms: linux/amd64
+          platforms: linux/amd64, linux/arm64
