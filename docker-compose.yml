@@ -53,6 +53,16 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  pytest:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hutschen/mv-tool:latest
+    volumes:
+      - ./config.yml:/usr/src/api/config.yml
+    entrypoint: /bin/sh
+    command: -c 'pip install pytest pytest-alembic && pytest'
+
 volumes:
   ldap_data:
   postgres_data:

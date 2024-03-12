@@ -9,11 +9,16 @@ goto :%1
 
 :up
     if not exist config.yml (copy config.example.yml config.yml)
-    docker-compose up -d
+    docker-compose up app -d
     goto :eof
 
 :down
     docker-compose down
+    goto :eof
+
+:pytest
+    docker compose up pytest
+    docker compose down pytest
     goto :eof
 
 :cleanup
