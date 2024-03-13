@@ -25,7 +25,7 @@ COPY ./mv-tool-ng ./
 RUN npm run ng build --optimization
 
 
-FROM python:3.11.8-alpine3.19
+FROM python:3.12-alpine3.19
 WORKDIR /usr/src/api
 
 # Install dependencies for web API
