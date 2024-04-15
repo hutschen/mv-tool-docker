@@ -17,6 +17,7 @@ goto :%1
     goto :eof
 
 :pytest
+    if not exist config.yml (copy config.example.yml config.yml)
     docker compose up pytest
     docker compose down pytest
     goto :eof

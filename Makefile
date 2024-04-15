@@ -24,6 +24,7 @@ down:
 	docker compose down
 
 pytest:
+	@if [ ! -f config.yml ]; then cp config.example.yml config.yml; fi
 	docker compose up pytest
 	docker compose down pytest
 
