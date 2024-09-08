@@ -10,7 +10,7 @@ ldap:
     login: uid
 database:
   # url: sqlite:///mvtool.db
-  url: postgresql+psycopg2://user:passwd@db/mvtool
+  url: postgresql+psycopg2://pguser:pgpasswd@db/mvtool
 fastapi:
   docs_url: /docs
   redoc_url: /redoc
